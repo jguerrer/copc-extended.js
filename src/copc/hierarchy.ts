@@ -63,5 +63,6 @@ function parse(buffer: Binary): Hierarchy.Subtree {
 
 async function load(filename: string | Getter, page: Hierarchy.Page) {
   const get = Getter.create(filename)
+  console.log(page.pageOffset, page.pageOffset + page.pageLength)
   return parse(await get(page.pageOffset, page.pageOffset + page.pageLength))
 }

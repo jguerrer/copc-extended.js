@@ -1,5 +1,5 @@
-import type { LazPerf } from 'laz-perf'
-import * as Las from '../las'
+import type { LazPerf } from 'laz-perf'  //laz decompressor
+import * as Las from '../las'//actual las reader
 import { Binary, Getter } from '../utils'
 
 import { Hierarchy } from './hierarchy'
@@ -12,6 +12,7 @@ export type Copc = {
   eb: Las.ExtraBytes[]
   wkt?: string
 }
+//
 export const Copc = {
   create,
   loadHierarchyPage,
@@ -84,7 +85,7 @@ async function loadPointDataBuffer(
   node: Hierarchy.Node,
   lazPerf?: LazPerf
 ) {
-  const compressed = await loadCompressedPointDataBuffer(filename, node)
+  const compressed = await loadCompressedPointDataBuffer(filename, node)//only read data as compressed
 
   const { pointCount } = node
   return Las.PointData.decompressChunk(
@@ -101,6 +102,10 @@ async function loadPointDataView(
   node: Hierarchy.Node,
   { lazPerf, include }: Options = {}
 ) {
-  const buffer = await loadPointDataBuffer(filename, copc.header, node, lazPerf)
-  return Las.View.create(buffer, copc.header, copc.eb, include)
+  //this reads the data for the hierarchy
+  const buffer = await loadPointDataBuffer(filename, copc.header, node, lazPerf)//decompressed data as byte array
+  // takes decompressed data and creates a view of the data based on header
+
+  //buffer is decompressed data for the node ,i.e. x,y,z, ... depending on data format and header
+  return Las.View.create(buffer, copc.header, copc.eb, include)//view itself is the actual formating scalling and offset
 }

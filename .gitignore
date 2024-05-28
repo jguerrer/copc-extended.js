@@ -1,3 +1,6 @@
 node_modules/**
 lib/**
 coverage/**
+data/t69_down.copc.laz
+data/Tower90-99.copc.laz
+data/Tower90-99.laz
